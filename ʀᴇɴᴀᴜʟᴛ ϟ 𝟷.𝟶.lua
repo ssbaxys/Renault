@@ -1,6 +1,6 @@
--- ʙᴇᴩᴄия: 1.0
+-- ʙᴇᴩᴄия: 1.0.0 Alpha
 -- ʙʏ ꜱꜱʙᴀxʏꜱ
-gg.alert("ʙᴇᴩᴄия: 1.0")
+gg.alert("ʙᴇᴩᴄия: 1.0.0 Alpha")
 gg.alert("ʀᴇɴᴀᴜʟᴛ ʙʏ ꜱꜱʙᴀxʏꜱ")
 function HOME()
   SN = gg.choice({
@@ -20,7 +20,7 @@ function HOME()
        "ᴄᴋоᴩо...",
        "ᴄᴋоᴩо...",
        "⛨ 𝙴𝚡𝚒𝚝"
-}, nil,"ʀᴇɴᴀᴜʟᴛ ϟ 1.0")
+}, nil,"ʀᴇɴᴀᴜʟᴛ ϟ 1.0.0 Alpha")
  if SN == nil then
     else
     if SN == 1 then
@@ -2845,5 +2845,5 @@ while true do
  end
  end
 
--- ʙᴇᴩᴄия: 1.0
+-- ʙᴇᴩᴄия: 1.0.0 Alpha
 -- ʙʏ ꜱꜱʙᴀxʏꜱ
