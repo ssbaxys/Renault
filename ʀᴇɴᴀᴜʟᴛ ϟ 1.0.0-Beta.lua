@@ -77,10 +77,10 @@ end
 function FOLDER1()
   MN8 = gg.multiChoice({
           "⛨ 𝙽𝚘𝚌𝚕𝚒𝚙(Fix))",
-          "⛨ xd",
+          "⛨ Я Не помню что была здесь за функция лол",
           "⛨ Flash Speed",
           "⛨ Infinity Jump",
-          "ᴄᴋоᴩо...",
+          "⛨ Noclip(ALT)",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -185,20 +185,23 @@ function FOLDER1()
 
 function HACK1()
 gg.processPause()
-gg.setRanges(gg.REGION_ANONYMOUS)
 gg.clearResults()
 gg.searchNumber("281 479 271 678 208", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
 revert = gg.getResults(5000, nil, nil, nil, nil, nil, nil, nil, nil)
 gg.editAll("16 777 472", gg.TYPE_QWORD)
-gg.searchNumber("-10X4", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
-gg.processResume()
-gg.refineNumber("-10X8", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
-gg.processResume()
-revert = gg.getResults(99999, nil, nil, nil, nil, nil, nil, nil, nil)
-gg.editAll("10", gg.TYPE_FLOAT)
-gg.processResume()
+
 gg.clearResults()
-gg.toast("⛨ Activated")
+gg.searchNumber("3 239 900 611", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(4000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("0", gg.TYPE_QWORD)
+
+gg.clearResults()
+gg.searchNumber("-10", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(20000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("999", gg.TYPE_FLOAT)
+gg.processResume() 
+gg.freeze = true
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK2()
@@ -206,17 +209,49 @@ gg.setRanges(gg.REGION_ANONYMOUS)
 gg.searchNumber("257698037761Q;60D:20", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
 gg.getResults(10000)
 gg.editAll("0", gg.TYPE_DWORD) gg.clearResults()
-gg.toast("⛨ Activated")
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 gg.setVisible(false)
 end
 
 function HACK3()
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("4515609228873826304Q;4392630932057270955Q", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("4515609228873826304", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(1000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("4515609228892700672", gg.TYPE_QWORD)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
+gg.clearResults()
 end
 
 function HACK4()
 end
 
 function HACK5()
+gg.processPause()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.clearResults()
+
+gg.searchNumber("h7600000040451798760000000001000001000100", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h7600000040451798760000000001000101000100", gg.TYPE_BYTE)
+
+
+gg.clearResults()
+gg.searchNumber("hC3F51CC1", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.getResults(50000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h00000000", gg.TYPE_BYTE)
+
+
+gg.clearResults()
+gg.searchNumber("h000020C100000000", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(50000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h00426F4900000000", gg.TYPE_BYTE)
+gg.processResume() 
+addSoafSYSTEM(1)
+gg.freeze = true
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
+gg.clearResults()
 end
 
 function HACK6()
@@ -278,9 +313,9 @@ end
 
 function FOLDER2()
   MN8 = gg.multiChoice({
-          "⛨ Anti-Kick(fix)",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ Anti-Kick",
+          "⛨ Anti-Kick(ALT1)",
+          "⛨ Anti-Kick(ALT2)",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -386,6 +421,12 @@ function FOLDER2()
  end
 
 function HACK26()
+gg.clearResults()
+GetUnityMethod("LeaveRoom", 4)
+gg.getResults(gg.getResultsCount())
+gg.editAll(VOID, 4)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
+gg.clearResults()
 end
 
 function HACK27()
@@ -748,6 +789,14 @@ function FOLDER4()
  end
 
 function ITEM1()
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1D;2.80259693e-45F;2F;15F", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("2.80259693e-45", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(1000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("4.20389539e-45", gg.TYPE_FLOAT)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
+gg.clearResults()
 end
 
 function ITEM2()
@@ -822,7 +871,7 @@ end
 function FOLDER5()
   MN8 = gg.multiChoice({
           "⛨ 𝙸𝚗𝚏𝚒𝚗𝚒𝚝𝚢 𝙽𝚒𝚌𝚔",
-          "ᴄᴋоᴩо...",
+          "⛨ Color Nick",
           "⛨ Wizard Hat(Free)",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -934,13 +983,25 @@ gg.searchNumber("0;16;0;1044957385", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1,
 revert = gg.getResults(55555, nil, nil, nil, nil, nil, nil, nil, nil)
 gg.editAll("0", gg.TYPE_DWORD)
 gg.clearResults()
-gg.toast("⛨ 𝙰𝚌𝚝𝚒𝚟𝚊𝚝𝚎𝚍")
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM27()
-end
+addSoafSYSTEM(1)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("257698037761Q;60D:20", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(10000, nil, nil, nil, "60", "60", nil, nil, nil)
+gg.editAll("0", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 
 function ITEM28()
+gg.searchNumber(";Helmet", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(55555, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Wizard", gg.TYPE_WORD)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
+gg.clearResults()
 end
 
 function ITEM29()
