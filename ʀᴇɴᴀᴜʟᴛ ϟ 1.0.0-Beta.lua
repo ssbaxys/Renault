@@ -76,10 +76,10 @@ SsbaxyS = -1
 end
 function FOLDER1()
   MN8 = gg.multiChoice({
-          "⛨ 𝙽𝚘𝚌𝚕𝚒𝚙 𝚅𝟹",
-          "⛨",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ 𝙽𝚘𝚌𝚕𝚒𝚙(Fix))",
+          "⛨ xd",
+          "⛨ Flash Speed",
+          "⛨ Infinity Jump",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -278,7 +278,7 @@ end
 
 function FOLDER2()
   MN8 = gg.multiChoice({
-          "ᴄᴋоᴩо...",
+          "⛨ Anti-Kick(fix)",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -640,7 +640,7 @@ end
 
 function FOLDER4()
   MN8 = gg.multiChoice({
-          "ᴄᴋоᴩо...",
+          "⛨ Nands = RPG",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -822,8 +822,8 @@ end
 function FOLDER5()
   MN8 = gg.multiChoice({
           "⛨ 𝙸𝚗𝚏𝚒𝚗𝚒𝚝𝚢 𝙽𝚒𝚌𝚔",
-          "⛨ 𝙲𝚘𝚕𝚘𝚛 𝙽𝚒𝚌𝚔",
           "ᴄᴋоᴩо...",
+          "⛨ Wizard Hat(Free)",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -938,13 +938,6 @@ gg.toast("⛨ 𝙰𝚌𝚝𝚒𝚟𝚊𝚝𝚎𝚍")
 end
 
 function ITEM27()
-gg.setRanges(gg.REGION_ANONYMOUS)
-gg.searchNumber("0;16;0;1044957385", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
-gg.refineNumber("16", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
-revert = gg.getResults(55555, nil, nil, nil, nil, nil, nil, nil, nil)
-gg.editAll("1000", gg.TYPE_DWORD)
-gg.clearResults()
-gg.toast("⛨ 𝙰𝚌𝚝𝚒𝚟𝚊𝚝𝚎𝚍")
 end
 
 function ITEM28()
