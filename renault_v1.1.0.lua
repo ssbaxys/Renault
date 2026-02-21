@@ -1,5 +1,157 @@
 -- ʙᴇᴩᴄия: 1.0.0
 -- ʙʏ ꜱꜱʙᴀxʏꜱ
+gg.alert("🌟 𝚆𝙴𝙻𝙲𝙾𝙼𝙴 𝚃𝙾 𝚁𝙴𝙽𝙰𝚄𝙻𝚃 𝚂𝙲𝚁𝙸𝙿𝚃 🌟\n\n📌 𝙾𝙵𝙵𝙸𝙲𝙸𝙰𝙻 𝚂𝙸𝚃𝙴: https://renault-site.onrender.com\n💎 𝚃𝙴𝙻𝙴𝙶𝚁𝙰𝙼: https://t.me/SsbaxyS\n💬 𝙾𝙵𝙵𝙸𝙲𝙸𝙰𝙻 𝚃𝙶: https://t.me/ssbaxys_official\n📺 𝚈𝙾𝚄𝚃𝚄𝙱𝙴: https://www.youtube.com/@SsbaxyS\n🛠️ 𝙶𝙸𝚃𝙷𝚄𝙱: https://github.com/Ssbaxys\n🛠️ 𝙶𝙸𝚃𝙷𝚄𝙱 𝟸: https://github.com/SsbaxysS\n\n© Copyrights: @ssbaxys, @ssbaxyss, @SSbaxySLab, @ssbaxys., @ssbi, @sparta")
+
+local gg = gg
+local info = gg.getTargetInfo()
+local pointerType = (info.x64 == true and gg.TYPE_QWORD or gg.TYPE_DWORD)
+local pointerOffset = (info.x64 == true and 0x18 or 0xC)
+local metadata = gg.getRangesList("libil2cpp.so")
+local VOID = (info.x64 == true and "h C0 03 5F D6" or "h 1E FF 2F E1")
+
+local GetUnityMethod = function(method, flag)
+    local results = {}
+    gg.clearResults()
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_ANONYMOUS | gg.REGION_OTHER | gg.REGION_C_HEAP)
+    gg.searchNumber(':' .. method, gg.TYPE_BYTE, false, gg.SIGN_EQUAL, metadata[#metadata and 1 or 1]['start'], metadata[#metadata]['end'], 0)
+    local count = gg.getResultsCount()
+    if (count ~= 0) then
+        gg.refineNumber(tonumber(gg.getResults(1)[1].value) .. '', gg.TYPE_BYTE)
+        local t = gg.getResults(count)
+        gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_ANONYMOUS)
+        gg.loadResults(t)
+        gg.searchPointer(0)
+        t = gg.getResults(count)
+        for i, v in ipairs(t) do
+            v.address = v.address - pointerOffset
+            v.flags = pointerType
+        end
+        t = gg.getValues(t)
+        for i, v in ipairs(t) do
+            table.insert(results, {
+                address = v.value,
+                flags = flag
+            })
+        end
+        gg.loadResults(results)
+    else
+        gg.toast(method .. ' Not Found')
+    end
+end
+
+v = gg.getTargetInfo()
+L = v.label
+V = v.versionName
+function isProcess64Bit()
+    local regions = gg.getRangesList()
+    local lastAddress = regions[#regions]["end"]
+    return (lastAddress >> 32) ~= 0
+end
+local ISA = isProcess64Bit()
+function ISAOffsets()
+    if (ISA == false) then
+        edi = "+0x"
+        ed = "-0x"
+    elseif (ISA == true) then
+        edi = "0x"
+        ed = "-0x"
+    end
+end
+ISAOffsets()
+function ISAOffsetss()
+    if (ISA == false) then
+        edit = "~A B " .. edits
+    elseif (ISA == true) then
+        edit = "~A8 B\t [PC,#" .. edits .. "]"
+    end
+end
+liby = 1
+libf = 0
+libzz = "libil2cpp.so"
+libx = gg.getRangesList("libil2cpp.so")
+for i, v in ipairs(libx) do
+    if (libx[i].state == "Xa") then
+        libz = "libil2cpp.so[" .. liby .. "].start"
+        xand = gg.getRangesList("libil2cpp.so")[liby].start
+        libf = 1
+        break
+    end
+    liby = liby + 1
+end
+if (libf == 0) then
+    liby = 1
+    libzz = "libUE4.so"
+    libx = gg.getRangesList("libUE4.so")
+    for i, v in ipairs(libx) do
+        if (libx[i].state == "Xa") then
+            libz = "libUE4.so[" .. liby .. "].start"
+            xand = gg.getRangesList("libUE4.so")[liby].start
+            libf = 1
+            break
+        end
+        liby = liby + 1
+    end
+end
+lib = xand
+local sf = string.format
+function tohex(Data)
+    if (type(Data) == "number") then
+        return sf("0x%08X", Data)
+    end
+    return Data:gsub(".", function(a)
+        return string.format("%02X", (string.byte(a)))
+    end):gsub(" ", "")
+end
+function __()
+    xHEX = string.format("%X", aaaa)
+    if (#xHEX > 8) then
+        act = (#xHEX - 8) + 1
+        xHEX = string.sub(xHEX, act)
+    end
+    edits = edi .. xHEX
+    ISAOffsetss()
+end
+function _()
+    aaa = b - a
+    xHEX = string.format("%X", aaa)
+    if (#xHEX > 8) then
+        act = (#xHEX - 8) + 1
+        xHEX = string.sub(xHEX, act)
+    end
+    edits = ed .. xHEX
+    ISAOffsetss()
+end
+function hook_void(cc, bb)
+    LibStart = lib
+    local m = {}
+    m[1] = {address=(LibStart + bb),flags=gg.TYPE_DWORD}
+    gg.addListItems(m)
+    a = m[1].address
+    gg.clearList()
+    local p = {}
+    p[1] = {address=(LibStart + cc),flags=gg.TYPE_DWORD}
+    gg.addListItems(p)
+    gg.loadResults(p)
+    endhook = gg.getResults(1)
+    local n = {}
+    n[1] = {address=(LibStart + cc),flags=gg.TYPE_DWORD}
+    gg.addListItems(n)
+    b = n[1].address
+    gg.clearResults()
+    gg.clearList()
+    aaaa = a - b
+    if (tonumber(aaaa) < 0) then
+        _()
+    end
+    if (tonumber(aaaa) > 0) then
+        __()
+    end
+    local n = {}
+    n[1] = {address=(LibStart + cc),flags=gg.TYPE_DWORD,value=edit,freeze=true}
+    gg.addListItems(n)
+    gg.clearList()
+end
+
 gg.alert("ʙᴇᴩᴄия: 1.0.0")
 gg.alert("ʀᴇɴᴀᴜʟᴛ ʙʏ ꜱꜱʙᴀxʏꜱ")
 function HOME()
@@ -81,23 +233,24 @@ function FOLDER1()
           "⛨ Flash Speed",
           "⛨ Infinity Jump",
           "⛨ Noclip(ALT)",
+          "⛨ Fly",
+          "⛨ Immortal",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ God mod",
+          "⛨ Slide floor x2",
+          "⛨ Slide jump x2",
+          "⛨ Slide car x2",
+          "⛨ Freeze Animations",
+          "⛨ Invisible",
+          "⛨ Teleport",
+          "⛨ Bunny Hop",
+          "⛨ FOV",
+          "⛨ Convulsions",
+          "⛨ Free Camera",
+          "⛨ Jump Fly",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "⛨ 𝙱𝚊𝚌𝚔"
@@ -255,45 +408,172 @@ gg.clearResults()
 end
 
 function HACK6()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber('1.1', gg.TYPE_FLOAT)
+gg.getResults(10000)
+gg.editAll('1000', gg.TYPE_FLOAT)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK7()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1117782016;600.0", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("1117782016", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(10, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("-1", gg.TYPE_DWORD)
+gg.clearResults()
+gg.searchNumber("70.0;600.0", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("70", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(10, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("-10", gg.TYPE_FLOAT)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK8()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h 26 F9 F7 97 FF 43 04 D1 EF 3B 09 6D ED 33 0A 6D", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h 26 F9 F7 97 00 00 80 D2 C0 03 5F D6 ED 33 0A 6D", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK9()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h 20 00 1F D6 FF C3 00 D1 FE 0B 00 F9 F4 4F 02 A9", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h 20 00 1F D6 00 00 80 D2 C0 03 5F D6 F4 4F 02 A9", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK10()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber('h803FCDCC4C3E0000A040', gg.TYPE_BYTE)
+gg.refineNumber('h803FCDCC4C3E0000A040', gg.TYPE_BYTE)
+gg.getResults(500000)
+gg.editAll('h803F4054094B0000A040', gg.TYPE_BYTE)
+gg.searchNumber('h8C3F0000803FCDCC4C3E', gg.TYPE_BYTE)
+gg.refineNumber('h8C3F0000803FCDCC4C3E', gg.TYPE_BYTE)
+gg.getResults(500000)
+gg.editAll('h8C3F00BA5B49CDCC4C3E', gg.TYPE_BYTE)          
+gg.processResume()
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK11()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber('h9D74CDCC4C3D0000003F', gg.TYPE_BYTE)
+gg.refineNumber('h9D74CDCC4C3D0000003F', gg.TYPE_BYTE)
+gg.getResults(500000)
+gg.editAll('h9D74000000BF0000003F', gg.TYPE_BYTE)
+gg.processResume()
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK12()
+gg.setVisible(false)
+local void1=0x374CC0
+local void2=0x374640
+hook_void(void1,void2)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK13()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h 53 9E BD 97 FE 57 BE A9 F4 4F 01 A9 15 66 00 F0", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h 53 9E BD 97 20 00 80 D2 C0 03 5F D6 15 66 00 F0", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK14()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("-9.81", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(2000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("100", gg.TYPE_FLOAT)
+gg.processResume()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Teleport Off in 2.5s")
+gg.sleep(2500)
+if revert ~= nil then gg.setValues(revert) end
 end
 
 function HACK15()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("-9.81", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(2000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("1", gg.TYPE_FLOAT)
+gg.processResume()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Bunny Hop Off in 10s")
+gg.sleep(10000)
+if revert ~= nil then gg.setValues(revert) end
 end
 
 function HACK16()
+  fov = gg.prompt({
+    "Current FOV (Default 60)",
+    "New FOV"
+  }, {"60", nil}, {"number", "number"})
+  if fov == nil then
+    gg.alert("Invalid Input")
+  else
+  gg.setRanges(gg.REGION_ANONYMOUS)
+    gg.searchNumber(fov[1], gg.TYPE_FLOAT)
+    gg.getResults(100000)
+    gg.editAll(fov[2], gg.TYPE_FLOAT)
+    gg.toast("⛨ FOV ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
+    gg.clearResults()
+  end
 end
 
 function HACK17()
+gg.searchNumber("1.57079637051", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(5000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("15000", gg.TYPE_FLOAT)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK18()
+gg.processPause()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.clearResults()
+gg.searchNumber("281 479 271 678 208", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(5000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("16 777 472", gg.TYPE_QWORD)
+gg.clearResults()
+gg.searchNumber("3 239 900 611", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(4000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("0", gg.TYPE_QWORD)
+gg.clearResults()
+gg.searchNumber("-10", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(20000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("999", gg.TYPE_FLOAT)
+gg.processResume()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK19()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.clearResults()
+gg.searchNumber("4 575 657 222 474 616 013", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(5000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("4 575 657 222 807 803 045", gg.TYPE_QWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK20()
@@ -316,15 +596,14 @@ function FOLDER2()
           "⛨ Anti-Kick",
           "⛨ Anti-Kick(ALT1)",
           "⛨ Anti-Kick(ALT2)",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ Anti-Damage",
+          "⛨ Anti Crash",
+          "⛨ Anti crash Chat",
+          "⛨ Crash Chat",
+          "⛨ Steal Adventure Map",
+          "⛨ No Password (Override)",
+          "⛨ Speed Hack (Menu)",
+          "⛨ Anti Crash PP",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -436,27 +715,114 @@ function HACK28()
 end
 
 function HACK29()
+gg.setVisible(false)
+gg.clearResults()
+GetUnityMethod("TakeDamageLocal", 4)
+gg.getResults(gg.getResultsCount())
+gg.editAll(VOID, 4)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK30()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h BB BA BD 97 FF 83 02 D1 FD 7B 04 A9 FC 6F 05 A9", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h BB BA BD 97 20 00 80 D2 C0 03 5F D6 FC 6F 05 A9", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK31()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";<color=red>", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK32()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : После активации зайди в чат и вставь то что скопировалось.")
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";<color=red>", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";", gg.TYPE_WORD)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("257698037761Q;60D:20", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("0", gg.TYPE_DWORD)
+gg.clearResults()
+gg.copyText("<color=#87CEFA><quad size=999999999 width=999999999 height=19></a>")
 end
 
 function HACK33()
+gg.setVisible(false)
+gg.alert("Врубите функцию перед заходом на сервер, затем зайдите и сохраните карту. Отключите функцию и выйдите в меню.")
+gg.searchNumber(";GameMode", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";kingpidr", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK34()
+gg.setVisible(false)
+gg.searchNumber(";Password", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";sosihaho", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK35()
+  local speedcum = gg.choice({
+  "x2 speed",
+  "x5 speed",
+  "x10 speed",
+  "x100 speed",
+  "Back"},nil,
+  "⛨ Speed Hack Selection")
+  
+  if speedcum == nil then return end
+  if speedcum == 1 then 
+    gg.searchNumber("4 515 609 228 873 826 304", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local revert = gg.getResults(5000, nil, nil, nil, nil, nil, nil, nil, nil)
+    gg.editAll("4 515 609 228 886 409 216", gg.TYPE_QWORD)
+    gg.clearResults()
+  elseif speedcum == 2 then 
+    gg.searchNumber("4 515 609 228 873 826 304", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local revert = gg.getResults(5000, nil, nil, nil, nil, nil, nil, nil, nil)
+    gg.editAll("4 515 609 228 892 700 672", gg.TYPE_QWORD)
+    gg.clearResults()
+  elseif speedcum == 3 then 
+    gg.setRanges(gg.REGION_ANONYMOUS)
+    gg.searchNumber("4515609228873826304Q;4392630932057270955Q", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+    gg.refineNumber("4515609228873826304", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local revert = gg.getResults(1000, nil, nil, nil, nil, nil, nil, nil, nil)
+    gg.editAll("4515609228892700672", gg.TYPE_QWORD)
+    gg.clearResults()
+  elseif speedcum == 4 then 
+    gg.setRanges(gg.REGION_ANONYMOUS | gg.REGION_CODE_APP)
+    gg.searchNumber("4515609228873826304Q;4392630932057270955Q", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+    gg.refineNumber("4515609228873826304", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local revert = gg.getResults(1000, nil, nil, nil, nil, nil, nil, nil, nil)
+    gg.editAll("4 515 609 228 894 797 824", gg.TYPE_QWORD)
+    gg.clearResults()
+  end
+  gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK36()
+local ACKA01 = gg.getRangesList('libil2cpp.so')[3].start
+local APEX = {}
+APEX[1] = {address=ACKA01+0x11C4984+0, value='D2800000h', flags=4}
+APEX[2] = {address=ACKA01+0x11C4984+4, value='D65F03C0h', flags=4}
+gg.setValues(APEX)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK37()
@@ -500,15 +866,15 @@ end
 
 function FOLDER3()
   MN8 = gg.multiChoice({
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ Gravity",
+          "⛨ Enable Spawn Objects",
+          "⛨ Disable Passwords",
+          "⛨ Assigment Props",
+          "⛨ Infinity Props",
+          "⛨ Infinity Vehicles",
+          "⛨ Delete Map",
+          "⛨ Multimine",
+          "⛨ Explode All Vehicles",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -608,30 +974,100 @@ function FOLDER3()
  end
 
 function HACK51()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("-9.81", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(1000, nil, nil, nil, nil, nil, nil, nil, nil)
+local t = gg.getResults(1000, nil, nil, nil, nil, nil, nil, nil, nil)
+for i, v in ipairs(t) do
+    if v.flags == gg.TYPE_FLOAT then
+        v.value = "-5"
+        v.freeze = true
+    end
+end
+gg.addListItems(t)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK52()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";DisableSpawnObject", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK53()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Password", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK54()
+gg.setVisible(false)
+local void1=0x37D4E0
+local void2=0x37DB1C
+hook_void(void1,void2)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK55()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h A0 4A F8 97 FE 0F 1E F8 F4 4F 01 A9 53 DB 00 F0", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h A0 4A F8 97 E0 FF 9F 52 E0 FF AF 72 C0 03 5F D6", gg.TYPE_BYTE)
+gg.clearResults() 
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK56()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h 74 4B F8 97 FE 0F 1E F8 F4 4F 01 A9 53 DB 00 F0", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h 74 4B F8 97 E0 FF 9F 52 E0 FF AF 72 C0 03 5F D6", gg.TYPE_BYTE)
+gg.clearResults() 
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK57()
+gg.setVisible(false)
+local void1=0x37D4E0
+local void2=0x37DAB0
+hook_void(void1,void2)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function HACK58()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";10.0;3.4028234664E38;2", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";10000.0;3.4028234664E38;2", gg.TYPE_FLOAT)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Multimine")
 end
 
 function HACK59()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("2;2.8025969286E-45;3.4028234664E38;0;200.0;30.0", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("2;2.8025969286E-45;3.4028234664E38;0;-1.8;30.0", gg.TYPE_FLOAT)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Explode All")
 end
 
 function HACK60()
@@ -682,23 +1118,23 @@ end
 function FOLDER4()
   MN8 = gg.multiChoice({
           "⛨ Nands = RPG",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ SMG Rockets",
+          "⛨ SMG Arrows",
+          "⛨ Nan Pistol",
+          "⛨ Give SMG",
+          "⛨ Give Pistol",
+          "⛨ Give Bat",
+          "⛨ Give AKM",
+          "⛨ Give Shotgun",
+          "⛨ Rapidfire",
+          "⛨ Infinity ammo",
+          "⛨ Smg NaN Damage",
+          "⛨ Pistol NaN",
+          "⛨ Fast Pistol",
+          "⛨ Fast SMG",
+          "⛨ Fast Shotgun",
+          "⛨ All Gun Infinity Ammo",
+          "⛨ All Gun Rapidfire",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -800,54 +1236,192 @@ gg.clearResults()
 end
 
 function ITEM2()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("30;10;1.40129846e-45", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("1.40129846e-45", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(2500, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("4.20389539e-45", gg.TYPE_FLOAT)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM3()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("30;10;1", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("1", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(2000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("4", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM4()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("10;1097859072;1137180672", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("1097859072", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(500, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("-1", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM5()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(":Hands", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(":Smg", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM6()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(":Camera", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(":Pistol", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM7()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(":Camera", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(":Bat", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM8()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(":Hands", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(":Akm", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM9()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(":Crossbow", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(":Shotgun", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM10()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h 00 00 1F D6 FE 4F BF A9 53 31 00 D0 60 8A 42 F9 A0 00 00 B5", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h 00 00 1F D6 00 00 88 52 40 8F A8 72 00 00 27 1E C0 03 5F D6", gg.TYPE_BYTE)
+gg.clearResults() 
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM11()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h C0 03 5F D6 FE 0F 1E F8 F4 4F 01 A9 34 D9 00 90", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h C0 03 5F D6 00 00 80 D2 C0 03 5F D6 34 D9 00 90", gg.TYPE_BYTE)
+gg.clearResults() 
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM12()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("h 00 00 20 41 00 00 FA 43", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h 78 86 07 64 00 00 FA 43", gg.TYPE_BYTE)
+gg.clearResults() 
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM13()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber('h000070410000C842', gg.TYPE_BYTE)
+gg.refineNumber('h000070410000C842', gg.TYPE_BYTE)
+gg.getResults(500000)
+gg.editAll('h30FAFFFF0000C842', gg.TYPE_BYTE)
+gg.processResume()
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM14()
+gg.searchNumber("257;3;10", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.processResume()
+gg.toast("⛨ Shoot your pistol!")
+gg.sleep(2000)
+gg.refineNumber("257;3;9", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(70000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("3", gg.TYPE_DWORD)
+gg.processResume()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
-function ITEM5()
+function ITEM15()
+gg.searchNumber("257;1;30", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.processResume()
+gg.toast("⛨ Shoot your smg!")
+gg.sleep(2000)
+gg.refineNumber("257;1;29", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(70000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("1", gg.TYPE_DWORD)
+gg.processResume()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM16()
+gg.searchNumber("6;30;10F", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.processResume()
+gg.refineNumber("6;10F", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(2000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("9999", gg.TYPE_FLOAT)
+gg.processResume()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM17()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_CODE_APP)
+gg.searchNumber("h 52 88 00 00 72 A8 8F 40 1E 27 00 00 D6 5F 03 C0", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h A8 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00", gg.TYPE_BYTE)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : All Gun Infinity Ammo")
 end
 
 function ITEM18()
+local ACKA01 = gg.getRangesList('libil2cpp.so')[3].start
+local APEX = {}
+APEX[1] = {address=ACKA01+0x18A7DB0+0, value='52880000h', flags=4}
+APEX[2] = {address=ACKA01+0x18A7DB0+4, value='72A88F40h', flags=4}
+APEX[3] = {address=ACKA01+0x18A7DB0+8, value='1E270000h', flags=4}
+APEX[4] = {address=ACKA01+0x18A7DB0+12, value='D65F03C0h', flags=4}
+gg.setValues(APEX)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : All Gun Rapidfire")
 end
 
 function ITEM19()
@@ -873,25 +1447,25 @@ function FOLDER5()
           "⛨ 𝙸𝚗𝚏𝚒𝚗𝚒𝚝𝚢 𝙽𝚒𝚌𝚔",
           "⛨ Color Nick",
           "⛨ Wizard Hat(Free)",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ Rock Avatar",
+          "⛨ Coke Avatar",
+          "⛨ Cone Avatar",
+          "⛨ Crate Avatar",
+          "⛨ Bottle Avatar",
+          "⛨ Ball Avatar",
+          "⛨ Lucky Block Avatar",
+          "⛨ Bush Avatar",
+          "⛨ Barrier Avatar",
+          "⛨ Tire Avatar",
+          "⛨ Infinity Nickname",
+          "⛨ Anti < error",
+          "⛨ Santa hat",
+          "⛨ MikkyMouse/Dread hat",
+          "⛨ Corpse skin",
+          "⛨ Swat skin",
+          "⛨ Butcher skin",
+          "⛨ Backflip Anim",
+          "⛨ Flair Anim",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "⛨ 𝙱𝚊𝚌𝚔"
@@ -1006,60 +1580,238 @@ gg.clearResults()
 end
 
 function ITEM29()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Hero", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Rock", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM30()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Soldier", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";c_ck", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM31()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Jean", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Cone", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM32()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Derik", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Crate", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM33()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Business", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";bottle3", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM34()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";SpecialForcesW", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";bouncy_ball", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM35()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";SpecialForcesM", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";question_block", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM36()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Prisoner01", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Bush", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM37()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Military", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Barier", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM38()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Engineer", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Tire", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM39()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.clearResults()
+gg.setRanges(32)
+gg.searchNumber(5357803930, gg.TYPE_QWORD)
+HackersHouse = gg.getResults(250000)
+Offsets = {}
+Offsets['FirstOffset'] = {}
+Offsets['SecondOffset'] = {}
+Offsets['FinalResults'] = {}
+OffsetsIndex = 1
+for index, value in ipairs(HackersHouse) do
+	Offsets['FirstOffset'][OffsetsIndex] = {}
+	Offsets['FirstOffset'][OffsetsIndex].address = HackersHouse[index].address + -16
+	Offsets['FirstOffset'][OffsetsIndex].flags = gg.TYPE_QWORD
+	Offsets['SecondOffset'][OffsetsIndex] = {}
+	Offsets['SecondOffset'][OffsetsIndex].address = HackersHouse[index].address + -28
+	Offsets['SecondOffset'][OffsetsIndex].flags = gg.TYPE_QWORD
+	OffsetsIndex = OffsetsIndex + 1
+end
+Offsets['FirstOffset'] = gg.getValues(Offsets['FirstOffset'])
+Offsets['SecondOffset'] = gg.getValues(Offsets['SecondOffset'])
+OffsetsIndex = 1
+for index, value in ipairs(Offsets['FirstOffset']) do
+	if (Offsets['FirstOffset'][index].value == 1061208257) and (Offsets['SecondOffset'][index].value == 4561810862086072489) then
+		Offsets['FinalResults'][OffsetsIndex] = {}
+		Offsets['FinalResults'][OffsetsIndex] =  Offsets['FirstOffset'][index]
+		OffsetsIndex = OffsetsIndex + 1
+	end
+end
+for index, value in ipairs(Offsets['FinalResults']) do
+	Offsets['FinalResults'][index].address = Offsets['FinalResults'][index].address + -68
+	Offsets['FinalResults'][index].flags = 4
+end
+gg.loadResults(Offsets['FinalResults'])
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("99999999", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM40()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("257698037761Q;60D:20", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(10000, nil, nil, nil, "60", "60", nil, nil, nil)
+gg.editAll("0", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM41()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Debug", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Santa", gg.TYPE_WORD)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM42()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Party", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Dread", gg.TYPE_WORD)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM43()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Soldier", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Corpse", gg.TYPE_WORD)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM44()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Hero", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Swat", gg.TYPE_WORD)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM45()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Business", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Butcher", gg.TYPE_WORD)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM46()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Disagree", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(55555, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Backflip", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM47()
+gg.setVisible(false)
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Twerk", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(55555, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll(";Flair", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM48()
@@ -1070,18 +1822,18 @@ end
 
 function FOLDER6()
   MN8 = gg.multiChoice({
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
-          "ᴄᴋоᴩо...",
+          "⛨ Autumn chams",
+          "⛨ Winter chams",
+          "⛨ Black chams",
+          "⛨ Raimbow chams",
+          "⛨ NaN Floor",
+          "⛨ No Collision Prop",
+          "⛨ Air Walk",
+          "⛨ Giga Chams",
+          "⛨ Red Chams",
+          "⛨ Green Chams",
+          "⛨ Blue Chams",
+          "⛨ Blue Neon",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
           "ᴄᴋоᴩо...",
@@ -1178,39 +1930,126 @@ function FOLDER6()
  end
 
 function ITEM51()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741859", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("1073741928", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM52()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741859", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("1073741910", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM53()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741859", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+-- this matched RaimbowCamera
+gg.editAll("1073741880", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM54()
+gg.setVisible(false)
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741859", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(6660, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("1073741903", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM55()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("-9.81", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(2000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("0", gg.TYPE_FLOAT)
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : NaN Floor Off in 10s")
+gg.sleep(10000)
+if revert ~= nil then gg.setValues(revert) end
+gg.processResume()
 end
 
 function ITEM56()
+gg.clearResults()
+GetUnityMethod("OnCollisionEnter", 4)
+gg.getResults(gg.getResultsCount())
+gg.editAll(VOID, 4)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM57()
+gg.searchNumber("-9.81", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(50000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("0", gg.TYPE_FLOAT)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
 end
 
 function ITEM58()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1;3;4;257", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("257", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(100, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("0", gg.TYPE_FLOAT)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Giga Chams")
 end
 
 function ITEM59()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741895", gg.TYPE_DWORD)
+gg.refineNumber("1073741895", gg.TYPE_DWORD)
+gg.refineNumber("1073741895", gg.TYPE_DWORD)
+local revert = gg.getResults(5000)
+gg.editAll("1073741900", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Red Chams")
 end
 
 function ITEM60()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741893", gg.TYPE_DWORD)
+gg.refineNumber("1073741893", gg.TYPE_DWORD)
+gg.refineNumber("1073741893", gg.TYPE_DWORD)
+local revert = gg.getResults(5000)
+gg.editAll('1073741904', gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Green Chams")
 end
 
 function ITEM61()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741894", gg.TYPE_DWORD)
+gg.refineNumber("1073741894", gg.TYPE_DWORD)
+gg.refineNumber("1073741894", gg.TYPE_DWORD)
+local revert = gg.getResults(5000)
+gg.editAll("1073741900", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Blue Chams")
 end
 
 function ITEM62()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1073741898", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("1073741898", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("1073741898", gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+local revert = gg.getResults(2000, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("1073741862", gg.TYPE_DWORD)
+gg.clearResults()
+gg.toast("⛨ ᴀᴄᴛɪᴠᴀᴛᴇᴅ : Blue Neon")
 end
 
 function ITEM63()
